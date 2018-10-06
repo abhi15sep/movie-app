@@ -1,12 +1,13 @@
-import React, { Component } from "react";
-import { observable, action } from "mobx";
-import { observer } from "mobx-react";
+import React from 'react'
+import { observable, action } from 'mobx'
+import { observer } from 'mobx-react'
 
-import Todo from "./Todo";
+import Todo from './Todo'
 
 @observer
 class TodoList extends React.Component {
-  @observable newTodoTitle = "";
+  @observable
+  newTodoTitle = ''
 
   render() {
     return (
@@ -28,20 +29,20 @@ class TodoList extends React.Component {
         </ul>
         Tasks left: {this.props.store.unfinishedTodoCount}
       </div>
-    );
+    )
   }
 
   @action
   handleInputChange = e => {
-    this.newTodoTitle = e.target.value;
-  };
+    this.newTodoTitle = e.target.value
+  }
 
   @action
   handleFormSubmit = e => {
-    this.props.store.addTodo(this.newTodoTitle);
-    this.newTodoTitle = "";
-    e.preventDefault();
-  };
+    this.props.store.addTodo(this.newTodoTitle)
+    this.newTodoTitle = ''
+    e.preventDefault()
+  }
 }
 
-export default TodoList;
+export default TodoList

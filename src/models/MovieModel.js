@@ -1,7 +1,8 @@
 import { observable } from 'mobx'
 
-export default class TodoModel {
-  id = Math.random()
+export default class MovieModel {
+  @observable
+  id
   @observable
   title
   @observable

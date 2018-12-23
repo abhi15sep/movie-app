@@ -1,3 +1,4 @@
+/* eslint-disable */
 var path = require('path')
 var webpack = require('webpack')
 
@@ -7,12 +8,15 @@ module.exports = {
   entry: ['./src/index'],
   output: {
     path: path.join(__dirname, 'public'),
-    filename: 'bundle.js',
-    publicPath: '/public/'
+    filename: 'bundle.js'
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
+    modules: [
+      path.resolve(__dirname, 'node_modules'),
+      path.resolve(__dirname, './src')
+    ]
   },
   module: {
     rules: [
@@ -22,5 +26,9 @@ module.exports = {
         include: path.join(__dirname, 'src')
       }
     ]
+  },
+  devServer: {
+    contentBase: [path.join(__dirname, 'public')],
+    historyApiFallback: true //Fallback to index.html
   }
 }

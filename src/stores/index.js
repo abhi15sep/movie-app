@@ -1,12 +1,15 @@
-import Api from '../api'
-import MovieStore from './movieStore'
-
+//@flow
+import Api from 'api'
+import AuthStore from './authStore'
+import MoviesStore from './moviesStore'
 export default class RootStore {
-  api
-  movieStore
+  api: Api
+  authStore: AuthStore
+  moviesStore: MoviesStore
 
-  constructor(fetch) {
+  constructor(fetch: any) {
     this.api = new Api(fetch)
-    this.movieStore = new MovieStore(this)
+    this.moviesStore = new MoviesStore(this)
+    this.authStore = new AuthStore(this)
   }
 }

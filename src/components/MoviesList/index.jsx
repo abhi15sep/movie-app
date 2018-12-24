@@ -1,28 +1,29 @@
 //@flow
 import React from 'react'
-import { InfiniteScroll } from 'grommet'
+import { InfiniteScroll, Box } from 'grommet'
 import MovieModel from 'models/MovieModel'
 import MoviesStore from 'stores/moviesStore'
 import MovieListItem from 'components/MoviesListItem'
 
 type Props = {
   movies: Array<MovieModel>,
-  moviesStore: MoviesStore
+  moviesStore: MoviesStore,
+  onLoadNextPage: () => void
 }
 
 class MoviesList extends React.PureComponent<Props> {
   renderMoviesListItem = (movie: MovieModel) => {
-    const { moviesStore } = this.props
-    const genres = moviesStore.getGenreByMovie(movie)
-    return <MovieListItem key={movie.id} movie={movie} genres={genres} />
+    return <MovieListItem key={movie.id} movie={movie} />
   }
 
   render() {
-    const { movies } = this.props
+    const { movies, onLoadNextPage } = this.props
     return (
-      <InfiniteScroll items={movies} show={0}>
-        {(item: MovieModel) => this.renderMoviesListItem(item)}
-      </InfiniteScroll>
+      <Box>
+        <InfiniteScroll items={movies} onMore={onLoadNextPage}>
+          {(item: MovieModel) => this.renderMoviesListItem(item)}
+        </InfiniteScroll>
+      </Box>
     )
   }
 }

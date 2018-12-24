@@ -2,7 +2,6 @@
 import { observable, action } from 'mobx'
 import RootStore from '.'
 import MovieModel from 'models/MovieModel'
-import GenreModel from 'models/GenreModel'
 
 export default class MoviesStore {
   rootStore: RootStore
@@ -10,43 +9,35 @@ export default class MoviesStore {
   @observable
   movies: Array<MovieModel> = []
 
-  @observable
-  genres: Array<GenreModel> = []
-
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore
   }
 
   @action.bound
-  setGenres(data: { genres: Array<*> }) {
-    this.genres = data.genres.map(genre => new GenreModel(genre))
+  setMovies(data: { results: Array<*> }) {
+    this.movies = data.results.map(this.createMovie)
   }
 
   @action.bound
-  setMovies(data: { results: Array<*> }) {
-    this.movies = data.results.map(movie => new MovieModel(movie))
+  appendMovies(data: { results: Array<*> }) {
+    const newMovies = data.results.map(this.createMovie)
+    this.movies = [...this.movies, ...newMovies]
   }
 
   @action
-  discoverMovies() {
-    const { api } = this.rootStore
-    return this.fetchGenres().then(() =>
-      api.discoverMovies().then(this.setMovies)
-    )
+  discoverMovies(page: ?string) {
+    const { api, genresStore } = this.rootStore
+    return genresStore
+      .fetchGenres()
+      .then(() =>
+        api.discoverMovies(page).then(page ? this.appendMovies : this.setMovies)
+      )
   }
 
-  @action
-  fetchGenres() {
-    const { api } = this.rootStore
-    return api.getGenres().then(genres => this.setGenres(genres))
-  }
-
-  getGenreById = (id: number): GenreModel => {
-    const filtered = this.genres.filter(genre => genre.id === id)
-    return filtered[0]
-  }
-
-  getGenreByMovie = (movie: MovieModel): Array<GenreModel> => {
-    return movie.genre_ids.map(id => this.getGenreById(id))
+  createMovie = (data: {}): MovieModel => {
+    const { genresStore } = this.rootStore
+    const newMovie = new MovieModel(data)
+    newMovie.genres = genresStore.getGenresByArray(newMovie.genre_ids)
+    return newMovie
   }
 }

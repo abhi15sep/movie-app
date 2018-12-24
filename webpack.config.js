@@ -29,6 +29,7 @@ module.exports = {
   },
   devServer: {
     contentBase: [path.join(__dirname, 'public')],
-    historyApiFallback: true //Fallback to index.html
+    historyApiFallback: true, //Fallback to index.html
+    disableHostCheck: true
   }
 }

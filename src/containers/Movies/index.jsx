@@ -11,14 +11,29 @@ type Props = {
 @inject('moviesStore')
 @observer
 class Movies extends React.Component<Props> {
+  page: number = 1
+
   componentDidMount() {
     const { moviesStore } = this.props
     moviesStore.discoverMovies()
   }
 
+  handleLoadNextPage = () => {
+    console.log('page', this.page)
+    const { moviesStore } = this.props
+    this.page = this.page + 1
+    moviesStore.discoverMovies(this.page.toString())
+  }
+
   render() {
     const { moviesStore } = this.props
-    return <MoviesList movies={moviesStore.movies} moviesStore={moviesStore} />
+    return (
+      <MoviesList
+        movies={moviesStore.movies}
+        moviesStore={moviesStore}
+        onLoadNextPage={this.handleLoadNextPage}
+      />
+    )
   }
 }
 

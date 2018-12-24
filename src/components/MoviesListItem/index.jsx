@@ -2,24 +2,22 @@
 import React from 'react'
 import { Box, Text } from 'grommet'
 import { Group, Star, Calendar } from 'grommet-icons'
-import styled from 'styled-components'
+import styled, { type ReactComponentStyled } from 'styled-components'
 import MovieModel from 'models/MovieModel'
-import GenreModel from 'models/GenreModel'
 import Badge from 'components/Badge'
 
-const StyledImage = styled.img`
+const StyledImage: ReactComponentStyled<> = styled.img`
   width: 200px;
   object-fit: contain;
 `
 
 type Props = {
-  movie: MovieModel,
-  genres: Array<GenreModel>
+  movie: MovieModel
 }
 
 class MoviesListItem extends React.PureComponent<Props> {
   render() {
-    const { movie, genres } = this.props
+    const { movie } = this.props
     return (
       <Box pad="small">
         <Box
@@ -35,7 +33,7 @@ class MoviesListItem extends React.PureComponent<Props> {
               {movie.title}
             </Text>
             <Box direction="row" gap="xsmall" wrap>
-              {genres.map(genre => (
+              {movie.genres.map(genre => (
                 <Badge
                   key={genre.id}
                   label={genre.name}

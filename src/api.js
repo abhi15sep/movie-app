@@ -41,8 +41,13 @@ export default class Api {
       .then(unWrapJson)
   }
 
-  discoverMovies = () => {
-    return fetch(`${API_URL}discover/movie?api_key=${API_KEY}`)
+  discoverMovies = (page: ?string) => {
+    const url = new URL(`${API_URL}discover/movie`)
+    url.search = new URLSearchParams({
+      api_key: API_KEY,
+      page: page || '1'
+    }).toString()
+    return fetch(url)
       .catch(printError)
       .then(unWrapJson)
   }

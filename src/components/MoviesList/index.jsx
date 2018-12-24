@@ -2,12 +2,10 @@
 import React from 'react'
 import { InfiniteScroll, Box } from 'grommet'
 import MovieModel from 'models/MovieModel'
-import MoviesStore from 'stores/moviesStore'
 import MovieListItem from 'components/MoviesListItem'
 
 type Props = {
   movies: Array<MovieModel>,
-  moviesStore: MoviesStore,
   onLoadNextPage: () => void
 }
 

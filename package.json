@@ -8,7 +8,8 @@
     "build": "webpack --production",
     "lint": "eslint src",
     "flow": "flow",
-    "precommit": "npm run flow && npm run lint"
+    "flow-coverage": "flow-coverage-report",
+    "precommit": "npm run flow && npm run flow-coverage && npm run lint"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.11.1",
     "flow-bin": "^0.89.0",
+    "flow-coverage-report": "^0.6.1",
     "flow-typed": "^2.5.1",
     "grommet": "^2.2.1",
     "grommet-icons": "^4.1.0",
@@ -64,5 +66,14 @@
     "hooks": {
       "pre-commit": "npm run precommit"
     }
+  },
+  "flow-coverage-report": {
+    "globIncludePatterns": [
+      "src/**/*.js",
+      "src/**/*.jsx"
+    ],
+    "reportTypes": [
+      "html"
+    ]
   }
 }

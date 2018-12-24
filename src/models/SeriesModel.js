@@ -38,13 +38,7 @@ export default class SeriesModel {
   backdrop_path: ?string = null
 
   @observable
-  adult: ?boolean = null
-
-  @observable
   overview: ?string = null
-
-  @observable
-  release_date: ?string = null
 
   @observable
   first_air_date: ?string = null
@@ -55,7 +49,7 @@ export default class SeriesModel {
   @observable
   genres: Array<GenreModel> = []
 
-  constructor(attributes: *) {
+  constructor(attributes: {}) {
     Object.assign(this, attributes)
   }
 

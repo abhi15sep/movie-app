@@ -3,7 +3,7 @@ import React from 'react'
 import { Box, Text } from 'grommet'
 import { Group, Star, Calendar } from 'grommet-icons'
 import styled from 'styled-components'
-import MovieModel from 'models/MovieModel'
+import SeriesModel from 'models/SeriesModel'
 import Badge from 'components/Badge'
 
 const StyledImage = styled.img`
@@ -12,12 +12,12 @@ const StyledImage = styled.img`
 `
 
 type Props = {
-  movie: MovieModel
+  series: SeriesModel
 }
 
-class MoviesListItem extends React.PureComponent<Props> {
+class SeriesListItem extends React.PureComponent<Props> {
   render() {
-    const { movie } = this.props
+    const { series } = this.props
     return (
       <Box pad="small">
         <Box
@@ -27,13 +27,13 @@ class MoviesListItem extends React.PureComponent<Props> {
           direction="row"
           overflow="hidden"
         >
-          <StyledImage src={movie.posterUrl} />
+          <StyledImage src={series.posterUrl} />
           <Box pad="medium" gap="small">
             <Text size="large" weight="bold">
-              {movie.title}
+              {series.name}
             </Text>
             <Box direction="row" gap="xsmall" wrap>
-              {movie.genres.map(genre => (
+              {series.genres.map(genre => (
                 <Badge
                   key={genre.id}
                   label={genre.name}
@@ -42,24 +42,24 @@ class MoviesListItem extends React.PureComponent<Props> {
               ))}
             </Box>
             <Box flex="grow">
-              <Text size="small">{movie.overview}</Text>
+              <Text size="small">{series.overview}</Text>
             </Box>
             <Box direction="row" gap="xsmall" alignSelf="end">
               <Badge
                 icon={<Star size="small" />}
-                label={`${movie.vote_count ||
-                  'no vote_count'} / ${movie.vote_average ||
+                label={`${series.vote_count ||
+                  'no vote_count'} / ${series.vote_average ||
                   'no vote_average'}`}
                 background="neutral-3"
               />
               <Badge
                 icon={<Group size="small" />}
-                label={movie.popularity}
+                label={series.popularity}
                 background="neutral-3"
               />
               <Badge
                 icon={<Calendar size="small" />}
-                label={movie.release_date}
+                label={series.first_air_date}
                 background="neutral-3"
               />
             </Box>
@@ -70,4 +70,4 @@ class MoviesListItem extends React.PureComponent<Props> {
   }
 }
 
-export default MoviesListItem
+export default SeriesListItem

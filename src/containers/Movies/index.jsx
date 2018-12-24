@@ -19,7 +19,6 @@ class Movies extends React.Component<Props> {
   }
 
   handleLoadNextPage = () => {
-    console.log('page', this.page)
     const { moviesStore } = this.props
     this.page = this.page + 1
     moviesStore.discoverMovies(this.page.toString())
@@ -30,7 +29,6 @@ class Movies extends React.Component<Props> {
     return (
       <MoviesList
         movies={moviesStore.movies}
-        moviesStore={moviesStore}
         onLoadNextPage={this.handleLoadNextPage}
       />
     )

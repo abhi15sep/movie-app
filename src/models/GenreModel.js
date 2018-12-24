@@ -8,7 +8,7 @@ export default class MovieModel {
   @observable
   name: ?string = null
 
-  constructor(attributes: *) {
+  constructor(attributes: {}) {
     Object.assign(this, attributes)
   }
 }

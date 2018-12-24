@@ -14,30 +14,31 @@ export default class SeriesStore {
   }
 
   @action.bound
-  setSeries(data: { results: Array<*> }) {
-    this.series = data.results.map(this.createSeries)
+  setSeries(data: { results: Array<*> }): Array<SeriesModel> {
+    return (this.series = data.results.map(this.createSeries))
   }
 
   @action.bound
-  appendSeries(data: { results: Array<*> }) {
+  appendSeries(data: { results: Array<*> }): Array<SeriesModel> {
     const newSeries = data.results.map(this.createSeries)
-    this.series = [...this.series, ...newSeries]
+    return (this.series = [...this.series, ...newSeries])
   }
 
   @action
-  discoverSeries(page: ?string) {
+  discoverSeries(page: ?string): Promise<Array<SeriesModel>> {
+    if (this.series.length > 0) return Promise.resolve(this.series)
     const { api, genresStore } = this.rootStore
     return genresStore
-      .fetchGenres()
+      .fetchSeriesGenres()
       .then(() =>
-        api.discoverMovies(page).then(page ? this.appendSeries : this.setSeries)
+        api.discoverSeries(page).then(page ? this.appendSeries : this.setSeries)
       )
   }
 
   createSeries = (data: {}): SeriesModel => {
     const { genresStore } = this.rootStore
     const newSeries = new SeriesModel(data)
-    newSeries.genres = genresStore.getGenresByArray(newSeries.genre_ids)
+    newSeries.genres = genresStore.getSeriesGenresByArray(newSeries.genre_ids)
     return newSeries
   }
 }

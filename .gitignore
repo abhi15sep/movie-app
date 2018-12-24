@@ -5,6 +5,8 @@ npm-debug.log
 .firebaserc
 .firebase
 
+/flow-coverage
+
 /public/bundle.js
 
 /src/config.js

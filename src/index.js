@@ -1,3 +1,4 @@
+//@flow
 import React from 'react'
 import { render } from 'react-dom'
 import DevTools from 'mobx-react-devtools'
@@ -20,7 +21,7 @@ const stores = {
   routingStore
 }
 
-const history = syncHistoryWithStore(browserHistory, routingStore)
+const history: History = syncHistoryWithStore(browserHistory, routingStore)
 
 render(
   <div>

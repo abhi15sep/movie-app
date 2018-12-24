@@ -14,21 +14,22 @@ export default class MoviesStore {
   }
 
   @action.bound
-  setMovies(data: { results: Array<*> }) {
-    this.movies = data.results.map(this.createMovie)
+  setMovies(data: { results: Array<*> }): Array<MovieModel> {
+    return (this.movies = data.results.map(this.createMovie))
   }
 
   @action.bound
-  appendMovies(data: { results: Array<*> }) {
+  appendMovies(data: { results: Array<*> }): Array<MovieModel> {
     const newMovies = data.results.map(this.createMovie)
-    this.movies = [...this.movies, ...newMovies]
+    return (this.movies = [...this.movies, ...newMovies])
   }
 
   @action
-  discoverMovies(page: ?string) {
+  discoverMovies(page: ?string): Promise<Array<MovieModel>> {
+    if (this.movies.length > 0) return Promise.resolve(this.movies)
     const { api, genresStore } = this.rootStore
     return genresStore
-      .fetchGenres()
+      .fetchMovieGenres()
       .then(() =>
         api.discoverMovies(page).then(page ? this.appendMovies : this.setMovies)
       )
@@ -37,7 +38,7 @@ export default class MoviesStore {
   createMovie = (data: {}): MovieModel => {
     const { genresStore } = this.rootStore
     const newMovie = new MovieModel(data)
-    newMovie.genres = genresStore.getGenresByArray(newMovie.genre_ids)
+    newMovie.genres = genresStore.getMovieGenresByArray(newMovie.genre_ids)
     return newMovie
   }
 }

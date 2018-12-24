@@ -7,29 +7,54 @@ export default class GenresStore {
   rootStore: RootStore
 
   @observable
-  genres: Array<GenreModel> = []
+  movieGenres: Array<GenreModel> = []
+
+  @observable
+  seriesGenres: Array<GenreModel> = []
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore
   }
 
   @action.bound
-  setGenres(data: { genres: Array<*> }) {
-    this.genres = data.genres.map(genre => new GenreModel(genre))
+  setMovieGenres(data: { genres: Array<{}> }) {
+    this.movieGenres = data.genres.map(genre => new GenreModel(genre))
   }
 
   @action
-  fetchGenres() {
+  fetchMovieGenres() {
     const { api } = this.rootStore
-    return api.getGenres().then(genres => this.setGenres(genres))
+    return api.getMovieGenres().then(genres => this.setMovieGenres(genres))
   }
 
-  getGenreById = (id: number): GenreModel => {
-    const filtered = this.genres.filter(genre => genre.id === id)
+  getMovieGenreById = (id: number): GenreModel => {
+    const filtered = this.movieGenres.filter(genre => genre.id === id)
     return filtered[0]
   }
 
-  getGenresByArray = (genreIds: Array<number>): Array<GenreModel> => {
-    return genreIds.map(id => this.getGenreById(id))
+  getMovieGenresByArray = (genreIds: Array<number>): Array<GenreModel> => {
+    return genreIds.map(id => this.getMovieGenreById(id)).filter(genre => genre)
+  }
+
+  @action.bound
+  setSeriesGenres(data: { genres: Array<{}> }) {
+    this.seriesGenres = data.genres.map(genre => new GenreModel(genre))
+  }
+
+  @action
+  fetchSeriesGenres() {
+    const { api } = this.rootStore
+    return api.getSeriesGenres().then(genres => this.setSeriesGenres(genres))
+  }
+
+  getSeriesGenreById = (id: number): GenreModel => {
+    const filtered = this.seriesGenres.filter(genre => genre.id === id)
+    return filtered[0]
+  }
+
+  getSeriesGenresByArray = (genreIds: Array<number>): Array<GenreModel> => {
+    return genreIds
+      .map(id => this.getSeriesGenreById(id))
+      .filter(genre => genre)
   }
 }

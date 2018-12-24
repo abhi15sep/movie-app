@@ -52,8 +52,25 @@ export default class Api {
       .then(unWrapJson)
   }
 
-  getGenres = () => {
+  discoverSeries = (page: ?string) => {
+    const url = new URL(`${API_URL}discover/tv`)
+    url.search = new URLSearchParams({
+      api_key: API_KEY,
+      page: page || '1'
+    }).toString()
+    return fetch(url)
+      .catch(printError)
+      .then(unWrapJson)
+  }
+
+  getMovieGenres = () => {
     return fetch(`${API_URL}genre/movie/list?api_key=${API_KEY}`)
+      .catch(printError)
+      .then(unWrapJson)
+  }
+
+  getSeriesGenres = () => {
+    return fetch(`${API_URL}genre/tv/list?api_key=${API_KEY}`)
       .catch(printError)
       .then(unWrapJson)
   }

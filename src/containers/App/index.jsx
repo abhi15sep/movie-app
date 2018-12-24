@@ -1,6 +1,6 @@
 //@flow
 import React from 'react'
-import { Grommet } from 'grommet'
+import { Grommet, Box } from 'grommet'
 import { inject } from 'mobx-react'
 import Nav from 'components/Nav'
 import Router from 'components/Router'
@@ -14,7 +14,7 @@ const movieAppTheme = {
 }
 
 type Props = {
-  routingStore: Object
+  routingStore: { location: { pathname: string } }
 }
 
 @inject('routingStore')
@@ -24,8 +24,10 @@ class App extends React.Component<Props> {
 
     return (
       <Grommet plain theme={movieAppTheme}>
-        <Nav currentPath={routingStore.location.pathname} />
-        <Router />
+        <Box background="light-1">
+          <Nav currentPath={routingStore.location.pathname} />
+          <Router />
+        </Box>
       </Grommet>
     )
   }

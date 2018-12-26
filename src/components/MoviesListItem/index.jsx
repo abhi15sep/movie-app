@@ -1,14 +1,17 @@
 //@flow
 import React from 'react'
 import { Box, Text } from 'grommet'
-import { Group, Star, Calendar } from 'grommet-icons'
 import styled from 'styled-components'
 import MovieModel from 'models/MovieModel'
-import Badge from 'components/Badge'
+import MetaInfos from 'components/MetaInfos'
+import Genres from 'components/Genres'
 
 const StyledImage = styled.img`
   width: 200px;
   object-fit: contain;
+`
+const StyledMoviesListItem = styled(Box)`
+  background-color: white;
 `
 
 type Props = {
@@ -20,7 +23,7 @@ class MoviesListItem extends React.PureComponent<Props> {
     const { movie } = this.props
     return (
       <Box pad="small">
-        <Box
+        <StyledMoviesListItem
           elevation="medium"
           border="all"
           round="medium"
@@ -28,43 +31,30 @@ class MoviesListItem extends React.PureComponent<Props> {
           overflow="hidden"
         >
           <StyledImage src={movie.posterUrl} />
-          <Box pad="medium" gap="small">
-            <Text size="large" weight="bold">
-              {movie.title}
-            </Text>
-            <Box direction="row" gap="xsmall" wrap>
-              {movie.genres.map(genre => (
-                <Badge
-                  key={genre.id}
-                  label={genre.name}
-                  background="neutral-1"
-                />
-              ))}
+          <Box pad="medium" gap="small" flex>
+            <Box>
+              <Text size="large" weight="bold" truncate>
+                {movie.title}
+              </Text>
+              <Box direction="row" gap="xsmall">
+                <Text size="medium" truncate>
+                  {movie.original_title}
+                </Text>
+                <Text size="medium">[{movie.original_language}]</Text>
+              </Box>
             </Box>
-            <Box flex="grow">
+            <Genres genres={movie.genres} />
+            <Box flex overflow="scroll">
               <Text size="small">{movie.overview}</Text>
             </Box>
-            <Box direction="row" gap="xsmall" alignSelf="end">
-              <Badge
-                icon={<Star size="small" />}
-                label={`${movie.vote_count ||
-                  'no vote_count'} / ${movie.vote_average ||
-                  'no vote_average'}`}
-                background="neutral-3"
-              />
-              <Badge
-                icon={<Group size="small" />}
-                label={movie.popularity}
-                background="neutral-3"
-              />
-              <Badge
-                icon={<Calendar size="small" />}
-                label={movie.release_date}
-                background="neutral-3"
-              />
-            </Box>
+            <MetaInfos
+              voteAverage={movie.vote_average}
+              voteCount={movie.vote_count}
+              popularity={movie.popularity}
+              releaseDate={movie.release_date}
+            />
           </Box>
-        </Box>
+        </StyledMoviesListItem>
       </Box>
     )
   }

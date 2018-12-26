@@ -29,7 +29,7 @@ export default class SeriesModel {
   original_language: ?string = null
 
   @observable
-  original_title: ?string = null
+  original_name: ?string = null
 
   @observable
   genre_ids: Array<number> = []

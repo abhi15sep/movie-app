@@ -1,14 +1,18 @@
 //@flow
 import React from 'react'
 import { Box, Text } from 'grommet'
-import { Group, Star, Calendar } from 'grommet-icons'
 import styled from 'styled-components'
 import SeriesModel from 'models/SeriesModel'
-import Badge from 'components/Badge'
+import MetaInfos from 'components/MetaInfos'
+import Genres from 'components/Genres'
 
 const StyledImage = styled.img`
   width: 200px;
   object-fit: contain;
+`
+
+const StyledSeriesListItem = styled(Box)`
+  background-color: white;
 `
 
 type Props = {
@@ -20,7 +24,7 @@ class SeriesListItem extends React.PureComponent<Props> {
     const { series } = this.props
     return (
       <Box pad="small">
-        <Box
+        <StyledSeriesListItem
           elevation="medium"
           border="all"
           round="medium"
@@ -28,43 +32,30 @@ class SeriesListItem extends React.PureComponent<Props> {
           overflow="hidden"
         >
           <StyledImage src={series.posterUrl} />
-          <Box pad="medium" gap="small">
-            <Text size="large" weight="bold">
-              {series.name}
-            </Text>
-            <Box direction="row" gap="xsmall" wrap>
-              {series.genres.map(genre => (
-                <Badge
-                  key={genre.id}
-                  label={genre.name}
-                  background="neutral-1"
-                />
-              ))}
+          <Box pad="medium" gap="small" flex>
+            <Box>
+              <Text size="large" weight="bold" truncate>
+                {series.name}
+              </Text>
+              <Box direction="row" gap="xsmall">
+                <Text size="medium" truncate>
+                  {series.original_name}
+                </Text>
+                <Text size="medium">[{series.original_language}]</Text>
+              </Box>
             </Box>
-            <Box flex="grow">
+            <Genres genres={series.genres} />
+            <Box flex overflow="scroll">
               <Text size="small">{series.overview}</Text>
             </Box>
-            <Box direction="row" gap="xsmall" alignSelf="end">
-              <Badge
-                icon={<Star size="small" />}
-                label={`${series.vote_count ||
-                  'no vote_count'} / ${series.vote_average ||
-                  'no vote_average'}`}
-                background="neutral-3"
-              />
-              <Badge
-                icon={<Group size="small" />}
-                label={series.popularity}
-                background="neutral-3"
-              />
-              <Badge
-                icon={<Calendar size="small" />}
-                label={series.first_air_date}
-                background="neutral-3"
-              />
-            </Box>
+            <MetaInfos
+              voteAverage={series.vote_average}
+              voteCount={series.vote_count}
+              popularity={series.popularity}
+              releaseDate={series.first_air_date}
+            />
           </Box>
-        </Box>
+        </StyledSeriesListItem>
       </Box>
     )
   }

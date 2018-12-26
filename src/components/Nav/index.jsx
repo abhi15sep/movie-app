@@ -1,8 +1,12 @@
 //@flow
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Box, Button, Heading } from 'grommet'
-import { StatusGood, StatusUnknown } from 'grommet-icons'
+import { Box, Button } from 'grommet'
+import styled from 'styled-components'
+
+const StyledNav = styled(Box)`
+  background-color: white;
+`
 
 type Props = {
   currentPath: ?string
@@ -20,11 +24,17 @@ class Nav extends React.PureComponent<Props> {
 
   render() {
     return (
-      <Box border="all" direction="row" round="medium" pad="medium" gap="small">
+      <StyledNav
+        border="all"
+        direction="row"
+        round="medium"
+        pad="medium"
+        gap="small"
+      >
         {this.renderNavLink('/', 'Login')}
         {this.renderNavLink('/movies', 'Movies')}
         {this.renderNavLink('/series', 'Series')}
-      </Box>
+      </StyledNav>
     )
   }
 }

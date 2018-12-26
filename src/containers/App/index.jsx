@@ -24,7 +24,7 @@ class App extends React.Component<Props> {
 
     return (
       <Grommet plain theme={movieAppTheme}>
-        <Box background="light-1">
+        <Box background="light-5" pad="medium" style={{ minHeight: '100%' }}>
           <Nav currentPath={routingStore.location.pathname} />
           <Router />
         </Box>

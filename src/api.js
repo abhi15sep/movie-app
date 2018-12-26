@@ -1,5 +1,5 @@
 //@flow
-import { API_KEY, API_URL } from './config'
+import { API_KEY, API_URL, DEFAULT_LANGUAGE } from './config'
 import logger from 'log'
 
 function printError(error: Error): Promise<*> {
@@ -11,9 +11,9 @@ function unWrapJson(response: Response): Promise<*> {
   return response.json()
 }
 export default class Api {
-  fetch = null
+  fetch: () => Promise<*>
 
-  constructor(fetch: *) {
+  constructor(fetch: () => Promise<*>) {
     this.fetch = fetch
   }
 
@@ -42,36 +42,36 @@ export default class Api {
   }
 
   discoverMovies = (page: ?string) => {
-    const url = new URL(`${API_URL}discover/movie`)
-    url.search = new URLSearchParams({
-      api_key: API_KEY,
-      page: page || '1'
-    }).toString()
-    return fetch(url)
+    return fetch(this.buildUrl('discover/movie', { page: page || '1' }))
       .catch(printError)
       .then(unWrapJson)
   }
 
   discoverSeries = (page: ?string) => {
-    const url = new URL(`${API_URL}discover/tv`)
-    url.search = new URLSearchParams({
-      api_key: API_KEY,
-      page: page || '1'
-    }).toString()
-    return fetch(url)
+    return fetch(this.buildUrl('discover/tv', { page: page || '1' }))
       .catch(printError)
       .then(unWrapJson)
   }
 
   getMovieGenres = () => {
-    return fetch(`${API_URL}genre/movie/list?api_key=${API_KEY}`)
+    return fetch(this.buildUrl('genre/movie/list'))
       .catch(printError)
       .then(unWrapJson)
   }
 
   getSeriesGenres = () => {
-    return fetch(`${API_URL}genre/tv/list?api_key=${API_KEY}`)
+    return fetch(this.buildUrl('genre/tv/list'))
       .catch(printError)
       .then(unWrapJson)
+  }
+
+  buildUrl = (path: string, params: {} = {}): URL => {
+    const newUrl = new URL(`${API_URL}${path}`)
+    newUrl.search = new URLSearchParams({
+      api_key: API_KEY,
+      language: DEFAULT_LANGUAGE,
+      ...params
+    }).toString()
+    return newUrl
   }
 }

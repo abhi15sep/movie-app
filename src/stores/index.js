@@ -12,7 +12,7 @@ export default class RootStore {
   moviesStore: MoviesStore
   seriesStore: SeriesStore
 
-  constructor(fetch: any) {
+  constructor(fetch: *) {
     this.api = new Api(fetch)
     this.authStore = new AuthStore(this)
     this.moviesStore = new MoviesStore(this)
